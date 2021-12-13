@@ -1,47 +1,68 @@
 package Fruit;
 
+import SnakeBackground.SnakeBackground;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class Fruit {
-     Image image1;
-     Image image2;
-     Image image3;
-     Image image4;
-     Image image5;
-     Image image6;
-     Image image7;
-     Image image8;
-     public Fruit(){
 
-     }
-   public Image addFruit1() throws FileNotFoundException {
-       image1 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_apple.png"));
-       return image1;
-   }
-   public Image addFruit2() throws FileNotFoundException{
-       image2 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_berry.png"));
-     return  image2;}
-    public Image addFruit3() throws FileNotFoundException{
-       image3 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_cherry.png"));
-     return image3;}
-    public Image addFruit4()throws FileNotFoundException{
-       image4 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_coconut_.png"));
-     return image4;}
-    public Image addFruit5()throws FileNotFoundException{
-       image5 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_orange.png"));
-     return image5;}
-    public Image addFruit6() throws FileNotFoundException{
-       image6 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_peach.png"));
-     return  image6;}
-    public  Image addFruit7() throws FileNotFoundException{
-       image7 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_pomegranate.png"));
-     return image7;}
-    public Image addFruit8()throws FileNotFoundException{
-       image8 = new Image(new FileInputStream("src/main/java/Fruit/images/ic_watermelon.png"));
-       return image8;
+    private ArrayList<Image> fruits;
+    private Image fruitImage;
+    private int fruitX;
+    private int fruitY;
+    private GraphicsContext gc;
+    private Canvas canvas;
 
-   }
+    private SnakeBackground backGround;
+
+
+    public Fruit(){
+        this.fruits = new ArrayList<>();
+        this.canvas= new Canvas();
+        this.gc= canvas.getGraphicsContext2D();
+        this.backGround= new SnakeBackground();
+
+    }
+
+    public void addFruits() throws FileNotFoundException {
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_apple.png")));
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_berry.png")));
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_cherry.png")));
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_coconut_.png")));
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_orange.png")));
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_peach.png")));
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_pomegranate.png")));
+        fruits.add(new Image(new FileInputStream("src/main/java/Fruit/images/ic_watermelon.png")));
+
+
+    }
+
+    public void produceFruit() throws FileNotFoundException {
+        fruitX = (int) (Math.random() * backGround.getRows());
+        fruitY = (int) (Math.random() * backGround.getColumns());
+        addFruits();
+        fruitImage = fruits.get((int) (Math.random() * fruits.size()));
+    }
+
+    public void drawFruit(GraphicsContext gc) {
+        final double SQUARE_SIZE = backGround.getSquareSize();
+        gc.drawImage(fruitImage, fruitX * SQUARE_SIZE, fruitY * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+    }
+
+    public int getFruitX(){
+        return fruitX;
+    }
+    public int getFruitY(){
+        return fruitY;
+    }
+
+
+
+
 
 }

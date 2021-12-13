@@ -28,12 +28,12 @@ public class MainMenu extends Application {
 
     private static final int WIDTH = 1280;
     private static final int HEIGHT = 720;
-    private final SnakeGame normalGame = new SnakeGame();
+    private final SnakeGameNormal normalGame = new SnakeGameNormal();
+    private final SnakeGameNoWalls noWallsGame= new SnakeGameNoWalls();
 
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Normal snake game", normalGame),
-            new Pair<String, Runnable>("Windowless snake game", () -> {
-            }),
+            new Pair<String, Runnable>("Windowless snake game", noWallsGame),
             new Pair<String, Runnable>("User Manual", () -> {
             }),
             new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
