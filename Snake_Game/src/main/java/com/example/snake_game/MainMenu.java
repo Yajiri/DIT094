@@ -44,7 +44,7 @@ public class MainMenu extends Application {
     private Line line;
 
     private void addBackground() throws FileNotFoundException {
-        Image image = new Image( new FileInputStream("src/main/resources/com/example/snake_game/ArtStation-Forest-Battle-Background-Nauris-Amatnieks.jpg"));
+        Image image = new Image(new FileInputStream("Snake_Game/src/main/resources/com/example/snake_game/ArtStation-Forest-Battle-Background-Nauris-Amatnieks.jpg"));
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         imageView.setFitHeight(HEIGHT);
