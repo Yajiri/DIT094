@@ -6,17 +6,25 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.awt.event.MouseEvent;
+import java.io.File;
+
 
 public class MenuItem extends Pane {
 
     private Text text;
     private Effect shadow = new DropShadow(5, Color.BLACK);
-    private Effect blur = new BoxBlur(1,1,3);
+    private Effect blur = new BoxBlur(1, 1, 3);
+    private MediaPlayer musicPlayer;
 
     public MenuItem(String name) {
         Polygon bg = new Polygon(
@@ -28,7 +36,7 @@ public class MenuItem extends Pane {
         );
         bg.setStroke(Color.color(1, 1, 1, 0.75));
         bg.setEffect(new GaussianBlur());
-        bg.fillProperty().bind( Bindings.when(pressedProperty()) .then(Color.color(0, 0, 0, 0.75)) .otherwise(Color.color(0, 0, 0, 0.25)) );
+        bg.fillProperty().bind(Bindings.when(pressedProperty()).then(Color.color(0, 0, 0, 0.75)).otherwise(Color.color(0, 0, 0, 0.25)));
         text = new Text(name);
         text.setTranslateX(5);
         text.setTranslateY(20);
@@ -41,10 +49,25 @@ public class MenuItem extends Pane {
         );
         getChildren().addAll(bg, text);
     }
-    public void closeMainMenu(Stage menuStage){
+
+    public void closeMainMenu(Stage menuStage) {
         menuStage.close();
     }
-    public void setOnAction(Runnable action){setOnMouseClicked( e -> action.run()
-    );
+
+    public void setOnAction(Runnable action) {
+        setOnMouseClicked(e -> action.run());
     }
+
+
+    public void playMusic(String soundFile){
+        Media sound = new Media(new File(soundFile).toURI().toString());
+        musicPlayer = new MediaPlayer(sound);
+        musicPlayer.setOnEndOfMedia(new Runnable() {
+            public void run() {
+                musicPlayer.seek(Duration.ZERO);
+            }
+        });
+        musicPlayer.play();
+    }
+
 }
