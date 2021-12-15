@@ -1,7 +1,12 @@
 package SnakeBackground;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class SnakeBackground {
     private static final int WIDTH =800;
@@ -11,6 +16,7 @@ public class SnakeBackground {
     private static final int SQUARE_SIZE= WIDTH /ROWS;
     private GraphicsContext gc;
     private Canvas canvas;
+    private final int backgroundType = (int) ((Math.random() * (4 - 1)) + 1);
 
     public SnakeBackground(){
         this.canvas = new Canvas();
@@ -18,8 +24,8 @@ public class SnakeBackground {
 
     }
 
-    public void drawBackground(GraphicsContext gc) {
-
+    public void drawBackground(GraphicsContext gc) throws FileNotFoundException {
+        /*
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if ((i + j) % 2 == 0) {
@@ -30,6 +36,29 @@ public class SnakeBackground {
                 gc.fillRect(i * SQUARE_SIZE, j * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
             }
         }
+
+         */
+
+        Image image = new Image(new FileInputStream("Snake_Game/src/main/resources/com/example/snake_game/Background_Green.png"));
+
+        if (backgroundType == 1){
+            image = new Image(new FileInputStream("Snake_Game/src/main/resources/com/example/snake_game/Background_Green.png"));
+        }
+        if (backgroundType == 2)
+        {
+            image = new Image(new FileInputStream("Snake_Game/src/main/resources/com/example/snake_game/Background_Blue.png"));
+        }
+        if (backgroundType == 3)
+        {
+            image = new Image(new FileInputStream("Snake_Game/src/main/resources/com/example/snake_game/Background_Orange.png"));
+        }
+
+        
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setFitHeight(HEIGHT);
+        imageView.setFitWidth(WIDTH);
+        gc.drawImage(image, 0, 0);
     }
 
 

@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -19,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -30,6 +33,7 @@ public class MainMenu extends Application {
     private static final int HEIGHT = 720;
     private final SnakeGameNormal normalGame = new SnakeGameNormal();
     private final SnakeGameNoWalls noWallsGame= new SnakeGameNoWalls();
+
 
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
             new Pair<String, Runnable>("Normal snake game", normalGame),
@@ -81,12 +85,14 @@ public class MainMenu extends Application {
         st.play();
     }
 
+
+
     private void addMenu(double x, double y) {
         menuBox.setTranslateX(x);
         menuBox.setTranslateY(y);
-
         menuData.forEach(data -> {
             MenuItem item = new MenuItem(data.getKey());
+            //item.playMusic("Snake_Game/src/main/resources/com/example/snake_game/sounds/Snake_music.mp3");
             item.setOnAction(data.getValue());
             item.setTranslateX(-300);
             Rectangle clip = new Rectangle(300, 30);

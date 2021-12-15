@@ -18,6 +18,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 import java.awt.*;
 import java.io.FileNotFoundException;
@@ -35,6 +38,9 @@ public class SnakeGameNormal extends Application implements Runnable {
     private int score = 0;
     private boolean gamePaused = false;
     private static int cycleCount = Animation.INDEFINITE;
+    private boolean musicPlaying = false;
+    private MediaPlayer musicPlayer;
+    private MediaPlayer soundPlayer;
 
 
     @Override
@@ -117,15 +123,27 @@ public class SnakeGameNormal extends Application implements Runnable {
 
     public void run(GraphicsContext gc) throws IOException {
         if (gameOver) {
+                if (musicPlaying == true)
+                {
+                    musicPlayer.stop();
+                    playSound("Snake_Game/src/main/resources/com/example/snake_game/sounds/Death_sound.mp3");
+                    musicPlaying = false;
+                }
             gc.setFill(Color.RED);
             gc.setFont(new Font("Digital-7", 70));
             gc.fillText("Game Over", background.getWidth() / 3.5, background.getHeight() / 2);
             return;
         }
+        else {
+            if(musicPlaying == false) {
+                playMusic("Snake_Game/src/main/resources/com/example/snake_game/sounds/Playing_music.mp3");
+                musicPlaying = true;
+            }
+
+        }
         background.drawBackground(gc);
         fruit.drawFruit(gc);
         snake.drawSnake(gc);
-
 
         drawScore();
         for (int i = snake.getSnakeBody().size() - 1; i >= 1; i--) {
@@ -188,6 +206,7 @@ public class SnakeGameNormal extends Application implements Runnable {
 
     public void eatFruit() throws IOException {
         if (snake.getSnakeHead().getX() == fruit.getFruitX() && snake.getSnakeHead().getY() == fruit.getFruitY()) {
+            playSound("Snake_Game/src/main/resources/com/example/snake_game/sounds/MenuSelection_sound.mp3");
             snake.getSnakeBody().add(new Point(-1, -1));
             start:
             while (true) {
@@ -211,6 +230,24 @@ public class SnakeGameNormal extends Application implements Runnable {
 
     }
 
+    private void playSound(String soundFile){
+
+        Media sound = new Media(new File(soundFile).toURI().toString());
+        soundPlayer = new MediaPlayer(sound);
+        soundPlayer.play();
+    }
+
+    private void playMusic(String soundFile){
+
+        Media sound = new Media(new File(soundFile).toURI().toString());
+        musicPlayer = new MediaPlayer(sound);
+        musicPlayer.setOnEndOfMedia(new Runnable() {
+            public void run() {
+                musicPlayer.seek(Duration.ZERO);
+            }
+        });
+        musicPlayer.play();
+    }
 
     public void restart() throws FileNotFoundException {
         gameOver = false;
