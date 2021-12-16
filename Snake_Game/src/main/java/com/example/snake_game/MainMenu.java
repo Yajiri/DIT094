@@ -1,5 +1,6 @@
 package com.example.snake_game;
 
+import ScoreBoard.ScoreManager;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
@@ -12,16 +13,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -33,6 +30,8 @@ public class MainMenu extends Application {
     private static final int HEIGHT = 720;
     private final SnakeGameNormal normalGame = new SnakeGameNormal();
     private final SnakeGameNoWalls noWallsGame= new SnakeGameNoWalls();
+    private final BoardView boardView = new BoardView();
+    private final ScoreManager scoreManager = new ScoreManager();
 
 
     private List<Pair<String, Runnable>> menuData = Arrays.asList(
@@ -40,6 +39,7 @@ public class MainMenu extends Application {
             new Pair<String, Runnable>("Windowless snake game", noWallsGame),
             new Pair<String, Runnable>("User Manual", () -> {
             }),
+            new Pair<String, Runnable>("Score Board", boardView),
             new Pair<String, Runnable>("Exit to Desktop", Platform::exit)
     );
 
@@ -63,7 +63,7 @@ public class MainMenu extends Application {
         root.getChildren().add(title);
     }
     private void addLine(double x, double y) {
-        line = new Line(x, y, x, y + 160);
+        line = new Line(x, y, x, y + 180);
         line.setStrokeWidth(3);
         line.setStroke(Color.color(1, 1, 1, 0.75));
         line.setEffect(new DropShadow(5, Color.BLACK));
@@ -84,8 +84,6 @@ public class MainMenu extends Application {
         });
         st.play();
     }
-
-
 
     private void addMenu(double x, double y) {
         menuBox.setTranslateX(x);
@@ -122,6 +120,7 @@ public class MainMenu extends Application {
     @Override
     public void start (Stage primaryStage) throws Exception {
         Scene scene = new Scene(createContent());
+        scoreManager.initiateScoreBoard();
         primaryStage.setTitle("Snake");
         primaryStage.setScene(scene);
         primaryStage.show();

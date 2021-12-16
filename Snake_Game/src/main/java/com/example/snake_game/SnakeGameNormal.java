@@ -1,6 +1,7 @@
 package com.example.snake_game;
 import Direction.Direction;
 import Fruit.Fruit;
+import ScoreBoard.ScoreManager;
 import Snake.Snake;
 import SnakeBackground.SnakeBackground;
 import javafx.animation.Animation;
@@ -41,6 +42,7 @@ public class SnakeGameNormal extends Application implements Runnable {
     private boolean musicPlaying = false;
     private MediaPlayer musicPlayer;
     private MediaPlayer soundPlayer;
+    private final ScoreManager scoreManager = new ScoreManager();
 
 
     @Override
@@ -95,6 +97,8 @@ public class SnakeGameNormal extends Application implements Runnable {
                         e.printStackTrace();
                     }
                 } else if (code == KeyCode.ESCAPE) {
+                    scoreManager.addScore(score);
+                    score = 0;
                     stage.close();
                     gameOver = false;
                 }
@@ -115,19 +119,20 @@ public class SnakeGameNormal extends Application implements Runnable {
             }
             break;
         }
-
         timeLine.play();
-
-
     }
 
     public void run(GraphicsContext gc) throws IOException {
         if (gameOver) {
-                if (musicPlaying == true)
+                if (musicPlaying)
                 {
                     musicPlayer.stop();
                     playSound("Snake_Game/src/main/resources/com/example/snake_game/sounds/Death_sound.mp3");
                     musicPlaying = false;
+                    if (score > 0){
+                        scoreManager.addScore(score);
+                        score = 0;
+                    }
                 }
             gc.setFill(Color.RED);
             gc.setFont(new Font("Digital-7", 70));
@@ -135,7 +140,7 @@ public class SnakeGameNormal extends Application implements Runnable {
             return;
         }
         else {
-            if(musicPlaying == false) {
+            if(musicPlaying) {
                 playMusic("Snake_Game/src/main/resources/com/example/snake_game/sounds/Playing_music.mp3");
                 musicPlaying = true;
             }
@@ -169,7 +174,6 @@ public class SnakeGameNormal extends Application implements Runnable {
         }
         gameOver();
         eatFruit();
-
 
     }
 
@@ -215,7 +219,6 @@ public class SnakeGameNormal extends Application implements Runnable {
                     if (snake.getX() == fruit.getFruitX() && snake.getY() == fruit.getFruitY()) {
                         continue start;
                     }
-
                 }
                 break;
             }
@@ -250,6 +253,7 @@ public class SnakeGameNormal extends Application implements Runnable {
     }
 
     public void restart() throws FileNotFoundException {
+        score = 0;
         gameOver = false;
         currentDirection = Direction.RIGHT;
         snake.getSnakeBody().clear();
@@ -271,13 +275,8 @@ public class SnakeGameNormal extends Application implements Runnable {
         }
     }
 
-
     public static void main(String[] args) {
-
         launch();
-        // JSONObject obj= new JSONObject();
-
-
     }
 
     @Override
