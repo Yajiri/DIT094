@@ -124,15 +124,15 @@ public class SnakeGameNormal extends Application implements Runnable {
 
     public void run(GraphicsContext gc) throws IOException {
         if (gameOver) {
+            if (score > 0){
+                scoreManager.addScore(score);
+                score = 0;
+            }
                 if (musicPlaying)
                 {
                     musicPlayer.stop();
                     playSound("Snake_Game/src/main/resources/com/example/snake_game/sounds/Death_sound.mp3");
                     musicPlaying = false;
-                    if (score > 0){
-                        scoreManager.addScore(score);
-                        score = 0;
-                    }
                 }
             gc.setFill(Color.RED);
             gc.setFont(new Font("Digital-7", 70));
